@@ -9,18 +9,18 @@ from plover.gui_qt.utils import ToolBar
 from plover.oslayer.config import PLUGINS_PLATFORM
 from plover.steno import Stroke
 
-from PyQt5.QtWidgets import (
+from PySide6.QtWidgets import (
     QWidget, QPushButton, QGraphicsView, 
     QGraphicsScene, QApplication, QGraphicsTextItem,
     QGridLayout, QLabel, QSpacerItem, QSizePolicy,
-    QGraphicsDropShadowEffect, QAction
+    QGraphicsDropShadowEffect
 )
-from PyQt5.QtGui import (
-    QMouseEvent, QFont, QKeyEvent, QPen, QBrush, 
+from PySide6.QtGui import (
+    QFont, QKeyEvent, QPen, QBrush, 
     QFontDatabase, QColor, QKeySequence, QPainter,
-    QPaintEvent
+    QPaintEvent,QAction,QMouseEvent
 )
-from PyQt5.QtCore import (
+from PySide6.QtCore import (
     Qt, QPoint, QVariantAnimation, QRectF, QSettings,
     QTimer, QRect
 )
@@ -34,7 +34,8 @@ from plover_combo.combo_config import (
     ComboConfig
 )
 from plover_combo.config_ui import ConfigUI
-from plover_combo.resources_rc import *
+
+from . import resources_rc
 
 
 STYLESHEET = "border:0px; background:transparent;"
@@ -43,7 +44,7 @@ DEFAULT_COLOR = QColor(0, 0, 0)
 
 class ComboTool(Tool):
     TITLE = "Combo Counter"
-    ICON = ":/combo/icon.svg"
+    ICON = ":/plover_combo/resources/icon.svg"
     ROLE = "combo"
 
     def __init__(self, engine: StenoEngine) -> None:
@@ -51,7 +52,7 @@ class ComboTool(Tool):
         self.setObjectName("combo")
         engine.signal_connect("stroked", self.on_stroke)
 
-        QFontDatabase.addApplicationFont(":/combo/PloverRetro.ttf")
+        QFontDatabase.addApplicationFont(":/plover_combo/resources/PloverRetro.ttf")
 
         self.drag_position = QPoint()
         self.counter = 0
@@ -79,7 +80,7 @@ class ComboTool(Tool):
                     field_type = CONFIG_TYPES[field_name]
                     if field_type == ComboAlignment:
                         field_value = settings.value(field_name, type=int)
-                        setattr(self.config, field_name, field_value.value)
+                        setattr(self.config, field_name, field_value)
                     else:
                         setattr(
                             self.config, 
@@ -106,16 +107,16 @@ class ComboTool(Tool):
         painter = QPainter(self)
 
         if self.config.bg_opacity > 0:
-            painter.setCompositionMode(QPainter.CompositionMode_Overlay)
+            painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Overlay)
             bg_color = string_hex_to_color(self.config.bg_color, DEFAULT_COLOR)
             bg_color.setAlpha(self.config.bg_opacity)
             painter.fillRect(self.repaint_rect(), bg_color)
         else:
-            painter.setCompositionMode(QPainter.CompositionMode_Clear)
+            painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Clear)
             painter.fillRect(self.repaint_rect(), Qt.transparent)
 
         if self.config.border_width > 0:
-            painter.setCompositionMode(QPainter.CompositionMode_Overlay)
+            painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Overlay)
             border_color = string_hex_to_color(self.config.border_color, DEFAULT_COLOR)
             painter.setPen(QPen(border_color, self.config.border_width))
             painter.drawRect(self.repaint_rect())
@@ -442,4 +443,4 @@ class ComboTool(Tool):
     def repaint(self) -> None:
         self.repaint_offset = not self.repaint_offset
         self.setFixedWidth(self.width + self.repaint_offset * self.config.force_repaint_px)
-        
+
