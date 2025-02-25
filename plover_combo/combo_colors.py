@@ -1,7 +1,7 @@
 from typing import Optional, List, Tuple, Dict
 
-from PyQt5.QtWidgets import QLabel
-from PyQt5.QtGui import QColor
+from PyQt6.QtWidgets import QLabel
+from PyQt6.QtGui import QColor
 
 BAR_ALPHA = 220
 COLORS = {

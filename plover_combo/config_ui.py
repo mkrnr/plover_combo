@@ -1,11 +1,11 @@
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QDialog, QWidget, QLabel, QSpinBox, 
     QComboBox, QDialogButtonBox, QGridLayout,
     QGroupBox, QCheckBox, QVBoxLayout,
     QLineEdit, QScrollArea, QSizePolicy,
-    QPlainTextEdit, QSizePolicy
+    QPlainTextEdit
 )
-from PyQt5.QtCore import Qt
+from PyQt6.QtCore import Qt
 
 from plover_combo.combo_config import (
     ComboAlignment, ComboConfig, CONFIG_NAMES, CONFIG_ORDER, 
@@ -73,17 +73,15 @@ class ConfigUI(QDialog):
             elif field_type == ComboAlignment:
                 field_data = QComboBox()
                 field_data.addItems(ALIGNMENT_OPTIONS)
-                field_data.setCurrentIndex(
-                    getattr(self.temp_config, config_name).value
-                )
+                field_data.setCurrentIndex(int(getattr(self.temp_config, config_name).value))
 
             if field_data is not None:
                 field_data.setMinimumWidth(FIELD_DATA_WIDTH)
                 current_grid_layout.addWidget(
-                    field_label, current_grid_row, 0, 1, 1, Qt.AlignRight
+                    field_label, current_grid_row, 0, 1, 1, Qt.AlignmentFlag.AlignRight
                 )
                 current_grid_layout.addWidget(
-                    field_data, current_grid_row, 1, 1, 1, Qt.AlignLeft
+                    field_data, current_grid_row, 1, 1, 1, Qt.AlignmentFlag.AlignLeft
                 )
 
                 self.fields[config_name] = field_data
@@ -113,8 +111,8 @@ class ConfigUI(QDialog):
 
         self.button_box = QDialogButtonBox(
             (
-                QDialogButtonBox.Cancel | 
-                QDialogButtonBox.Ok
+                QDialogButtonBox.StandardButton.Cancel | 
+                QDialogButtonBox.StandardButton.Ok
             ),
             parent=self
         )

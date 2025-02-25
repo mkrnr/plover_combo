@@ -9,18 +9,18 @@ from plover.gui_qt.utils import ToolBar
 from plover.oslayer.config import PLUGINS_PLATFORM
 from plover.steno import Stroke
 
-from PyQt5.QtWidgets import (
+from PyQt6.QtWidgets import (
     QWidget, QPushButton, QGraphicsView, 
     QGraphicsScene, QApplication, QGraphicsTextItem,
     QGridLayout, QLabel, QSpacerItem, QSizePolicy,
-    QGraphicsDropShadowEffect, QAction
+    QGraphicsDropShadowEffect
 )
-from PyQt5.QtGui import (
-    QMouseEvent, QFont, QKeyEvent, QPen, QBrush, 
+from PyQt6.QtGui import (
+    QFont, QKeyEvent, QPen, QBrush, 
     QFontDatabase, QColor, QKeySequence, QPainter,
-    QPaintEvent
+    QPaintEvent,QAction,QMouseEvent
 )
-from PyQt5.QtCore import (
+from PyQt6.QtCore import (
     Qt, QPoint, QVariantAnimation, QRectF, QSettings,
     QTimer, QRect
 )
@@ -34,7 +34,6 @@ from plover_combo.combo_config import (
     ComboConfig
 )
 from plover_combo.config_ui import ConfigUI
-from plover_combo.resources_rc import *
 
 
 STYLESHEET = "border:0px; background:transparent;"
@@ -106,16 +105,16 @@ class ComboTool(Tool):
         painter = QPainter(self)
 
         if self.config.bg_opacity > 0:
-            painter.setCompositionMode(QPainter.CompositionMode_Overlay)
+            painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Overlay)
             bg_color = string_hex_to_color(self.config.bg_color, DEFAULT_COLOR)
             bg_color.setAlpha(self.config.bg_opacity)
             painter.fillRect(self.repaint_rect(), bg_color)
         else:
-            painter.setCompositionMode(QPainter.CompositionMode_Clear)
+            painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Clear)
             painter.fillRect(self.repaint_rect(), Qt.transparent)
 
         if self.config.border_width > 0:
-            painter.setCompositionMode(QPainter.CompositionMode_Overlay)
+            painter.setCompositionMode(QPainter.CompositionMode.CompositionMode_Overlay)
             border_color = string_hex_to_color(self.config.border_color, DEFAULT_COLOR)
             painter.setPen(QPen(border_color, self.config.border_width))
             painter.drawRect(self.repaint_rect())
