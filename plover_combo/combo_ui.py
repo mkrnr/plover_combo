@@ -9,18 +9,18 @@ from plover.gui_qt.utils import ToolBar
 from plover.oslayer.config import PLUGINS_PLATFORM
 from plover.steno import Stroke
 
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QWidget, QPushButton, QGraphicsView, 
     QGraphicsScene, QApplication, QGraphicsTextItem,
     QGridLayout, QLabel, QSpacerItem, QSizePolicy,
     QGraphicsDropShadowEffect
 )
-from PyQt6.QtGui import (
+from PySide6.QtGui import (
     QFont, QKeyEvent, QPen, QBrush, 
     QFontDatabase, QColor, QKeySequence, QPainter,
     QPaintEvent,QAction,QMouseEvent
 )
-from PyQt6.QtCore import (
+from PySide6.QtCore import (
     Qt, QPoint, QVariantAnimation, QRectF, QSettings,
     QTimer, QRect
 )
@@ -35,6 +35,8 @@ from plover_combo.combo_config import (
 )
 from plover_combo.config_ui import ConfigUI
 
+from . import resources_rc
+
 
 STYLESHEET = "border:0px; background:transparent;"
 DEFAULT_COLOR = QColor(0, 0, 0)
@@ -42,7 +44,7 @@ DEFAULT_COLOR = QColor(0, 0, 0)
 
 class ComboTool(Tool):
     TITLE = "Combo Counter"
-    ICON = ":/combo/icon.svg"
+    ICON = ":/plover_combo/resources/icon.svg"
     ROLE = "combo"
 
     def __init__(self, engine: StenoEngine) -> None:
@@ -50,7 +52,7 @@ class ComboTool(Tool):
         self.setObjectName("combo")
         engine.signal_connect("stroked", self.on_stroke)
 
-        QFontDatabase.addApplicationFont(":/combo/PloverRetro.ttf")
+        QFontDatabase.addApplicationFont(":/plover_combo/resources/PloverRetro.ttf")
 
         self.drag_position = QPoint()
         self.counter = 0
@@ -78,7 +80,7 @@ class ComboTool(Tool):
                     field_type = CONFIG_TYPES[field_name]
                     if field_type == ComboAlignment:
                         field_value = settings.value(field_name, type=int)
-                        setattr(self.config, field_name, field_value.value)
+                        setattr(self.config, field_name, field_value)
                     else:
                         setattr(
                             self.config, 
@@ -441,4 +443,4 @@ class ComboTool(Tool):
     def repaint(self) -> None:
         self.repaint_offset = not self.repaint_offset
         self.setFixedWidth(self.width + self.repaint_offset * self.config.force_repaint_px)
-        
+

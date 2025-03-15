@@ -1,11 +1,11 @@
-from PyQt6.QtWidgets import (
+from PySide6.QtWidgets import (
     QDialog, QWidget, QLabel, QSpinBox, 
     QComboBox, QDialogButtonBox, QGridLayout,
     QGroupBox, QCheckBox, QVBoxLayout,
     QLineEdit, QScrollArea, QSizePolicy,
     QPlainTextEdit
 )
-from PyQt6.QtCore import Qt
+from PySide6.QtCore import Qt
 
 from plover_combo.combo_config import (
     ComboAlignment, ComboConfig, CONFIG_NAMES, CONFIG_ORDER, 
